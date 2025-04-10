@@ -1,12 +1,13 @@
 "use client"
 
-import {LucideIcon, PrinterIcon, Redo2Icon, SpellCheckIcon, Undo2, Undo2Icon} from "lucide-react";
+import {BoldIcon, ItalicIcon, LucideIcon, PrinterIcon, Redo2Icon, SpellCheckIcon, Undo2, Undo2Icon} from "lucide-react";
 
 import {cn} from "@/lib/utils"
 
 import {useEditor, EditorContent} from '@tiptap/react'
 
 import { useEditorStore } from '@/store/use-editor-store'
+import { Separator } from "@/components/ui/separator";
 
 interface ToolbarButtonProps{
     onClick?: ()=> void;
@@ -23,8 +24,8 @@ const ToolbarButton = ({
         <button
             onClick={onClick}
             className={cn(
-                "text-sm h=7 min-w-7 flex items-center justify-center rounded-sm hover:bg-neutral-200/80",
-                isActive && "bg-neutral-200/80"
+                "text-sm h=7 min-w-7 flex items-center justify-center rounded-sm hover:bg-neutral-400",
+                isActive && "bg-neutral-400"
             )}
         >
             <Icon className="size-4"/>
@@ -66,11 +67,35 @@ export const Toolbar = ()=>{
                 },
             }
         ],
+        [
+            {
+                label: "Bold",
+                icon : BoldIcon,
+                isActive: editor?.isActive("bold"),
+                onClick: () => editor?.chain().focus().toggleBold().run(),
+            },
+            {
+                label: "Italic",
+                icon: ItalicIcon,
+                isActive: editor?.isActive("italic"),
+                onClick: () => editor?.chain().focus().toggleItalic().run(),
+            }
+        ]
     ];
 
     return(
         <div className="bg-[#F1F4F9] px-2.5 py-0.5 rounded-[24px] min-h-[40px] flex items-center gap-x-0.5 overflow-x-auto">
             {sections[0].map((item) => (
+                <ToolbarButton key={item.label} {...item}/>
+            ))}
+            <Separator orientation="vertical" className="h-6 bg-neutral-500"/>
+
+            <Separator orientation="vertical" className="h-6 bg-neutral-500"/>
+
+            <Separator orientation="vertical" className="h-6 bg-neutral-500"/>
+                
+            <Separator orientation="vertical" className="h-6 bg-neutral-500"/>
+            {sections[1].map((item) =>(
                 <ToolbarButton key={item.label} {...item}/>
             ))}
         </div>
